@@ -71,7 +71,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         whileHover={{ scale: disabled || loading ? 1 : 1.01 }}
         whileTap={{ scale: disabled || loading ? 1 : 0.97 }}
-        transition={{ duration: 0.1, ease: "easeOut" }}
+        transition={{ duration: 0.1 }}
         {...props}
       >
         {loading ? (

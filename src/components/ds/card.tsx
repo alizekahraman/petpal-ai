@@ -49,7 +49,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
         ref={ref}
         className={cn(cardVariants({ variant, padding }), className)}
         whileHover={isInteractive ? { y: -2, boxShadow: "0 2px 8px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.07)" } : undefined}
-        transition={{ duration: 0.18, ease: "easeOut" }}
+        transition={{ duration: 0.18 }}
         {...props}
       >
         {children}

@@ -22,7 +22,7 @@ function AnimatedNumber({ value, suffix = "" }: { value: number; suffix?: string
   const [display, setDisplay] = React.useState(0);
 
   React.useEffect(() => {
-    const controls = animate(mv, value, { duration: 0.8, ease: "easeOut" });
+    const controls = animate(mv, value, { duration: 0.8 });
     const unsub = rounded.on("change", setDisplay);
     return () => { controls.stop(); unsub(); };
   }, [value]);
@@ -67,7 +67,7 @@ export function StatCard({
       )}
       whileHover={onClick ? { y: -2, boxShadow: "0 2px 8px rgba(0,0,0,0.05), 0 12px 32px rgba(0,0,0,0.07)" } : undefined}
       whileTap={onClick ? { scale: 0.98 } : undefined}
-      transition={{ duration: 0.18, ease: "easeOut" }}
+      transition={{ duration: 0.18 }}
       onClick={onClick}
     >
       <div className="flex items-start justify-between gap-3">

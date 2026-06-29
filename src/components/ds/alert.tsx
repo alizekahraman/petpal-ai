@@ -80,7 +80,7 @@ export function Alert({
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8, height: 0, marginBottom: 0 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.2 }}
           className={cn(
             "relative flex gap-3 rounded-2xl border p-4",
             config.bg,

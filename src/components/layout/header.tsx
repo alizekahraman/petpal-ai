@@ -70,7 +70,7 @@ export function Header({ title }: HeaderProps) {
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: 220, opacity: 1 }}
               exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.22 }}
               className="flex items-center overflow-hidden"
             >
               <div className="flex items-center w-full h-9 bg-muted rounded-xl px-3 gap-2">
@@ -133,7 +133,7 @@ export function Header({ title }: HeaderProps) {
                   initial={{ opacity: 0, y: 8, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.97 }}
-                  transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.18 }}
                   className="absolute right-0 top-11 z-20 w-72 bg-card rounded-2xl border border-border/50 shadow-modal overflow-hidden"
                 >
                   <div className="px-4 py-3 border-b border-border/50 flex items-center justify-between">

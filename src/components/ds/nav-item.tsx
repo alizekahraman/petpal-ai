@@ -48,7 +48,7 @@ export function NavItem({
         className
       )}
       whileHover={{ x: disabled ? 0 : 1 }}
-      transition={{ duration: 0.1, ease: "easeOut" }}
+      transition={{ duration: 0.1 }}
     >
       {/* Active indicator */}
       <AnimatePresence>
@@ -59,7 +59,7 @@ export function NavItem({
             initial={{ opacity: 0, scaleY: 0 }}
             animate={{ opacity: 1, scaleY: 1 }}
             exit={{ opacity: 0, scaleY: 0 }}
-            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.2 }}
           />
         )}
       </AnimatePresence>
@@ -122,7 +122,7 @@ export function NavItem({
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            transition={{ duration: 0.2 }}
             className="overflow-hidden pl-7 mt-0.5 space-y-0.5"
           >
             {children}

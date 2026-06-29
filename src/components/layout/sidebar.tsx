@@ -37,7 +37,7 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <motion.aside
       animate={{ width: collapsed ? 68 : 232 }}
-      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.22 }}
       className={cn(
         "hidden md:flex flex-col min-h-screen bg-sidebar border-r border-sidebar-border shrink-0 overflow-hidden",
         className
@@ -99,7 +99,7 @@ export function Sidebar({ className }: SidebarProps) {
                       initial={{ opacity: 0, scaleY: 0 }}
                       animate={{ opacity: 1, scaleY: 1 }}
                       exit={{ opacity: 0, scaleY: 0 }}
-                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      transition={{ duration: 0.2 }}
                     />
                   )}
                 </AnimatePresence>

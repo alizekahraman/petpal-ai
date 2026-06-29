@@ -39,14 +39,14 @@ export function EmptyState({
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
+      transition={{ duration: 0.3 }}
       className={cn("flex flex-col items-center justify-center text-center px-6", s.py, className)}
     >
       {illustration ?? (
         <motion.div
           initial={{ scale: 0.8 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.35 }}
           className={cn("flex items-center justify-center bg-muted mb-4 shrink-0", s.iconWrap)}
         >
           <Icon className={cn("text-muted-foreground", s.icon)} />

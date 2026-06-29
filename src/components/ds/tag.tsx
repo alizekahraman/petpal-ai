@@ -39,7 +39,7 @@ export function Tag({ children, color = "neutral", icon, onRemove, className, si
       initial={{ opacity: 0, scale: 0.85 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.75 }}
-      transition={{ duration: 0.15, ease: "easeOut" }}
+      transition={{ duration: 0.15 }}
       className={cn(
         "inline-flex items-center gap-1.5 font-medium border rounded-full transition-colors",
         size === "sm" ? "text-[10px] px-2 py-0.5 gap-1" : "text-xs px-2.5 py-1",

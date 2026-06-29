@@ -126,7 +126,7 @@ export function TimelineItem({
     <motion.div
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.25, delay: index * 0.06, ease: "easeOut" }}
+      transition={{ duration: 0.25, delay: index * 0.06 }}
     >
       {content}
     </motion.div>
