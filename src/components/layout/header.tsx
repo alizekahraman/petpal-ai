@@ -9,6 +9,7 @@ import { Avatar } from "@/components/ds/avatar";
 import { Badge } from "@/components/ds/badge";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { siteConfig } from "@/config/site";
+import { useAuth } from "@/hooks/use-auth";
 
 const PLACEHOLDER_NOTIFICATIONS = [
   { id: "1", title: "Luna's vet visit tomorrow", time: "2h ago", read: false, type: "reminder" as const },
@@ -21,6 +22,8 @@ interface HeaderProps {
 }
 
 export function Header({ title }: HeaderProps) {
+  const { user } = useAuth();
+  const displayName = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? "You";
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [notifsOpen, setNotifsOpen] = React.useState(false);
@@ -179,7 +182,7 @@ export function Header({ title }: HeaderProps) {
         </div>
 
         {/* Avatar */}
-        <Avatar name="Jane Doe" size="sm" status="online" className="cursor-pointer ml-1" />
+        <Avatar name={displayName} size="sm" status="online" className="cursor-pointer ml-1" />
       </div>
     </header>
   );

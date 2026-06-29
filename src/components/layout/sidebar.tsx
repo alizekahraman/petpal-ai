@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ds/avatar";
 import { Badge } from "@/components/ds/badge";
 import { siteConfig } from "@/config/site";
+import { useAuth } from "@/hooks/use-auth";
+import { signOut } from "@/lib/actions/auth";
 
 const navItems = [
   { href: "/dashboard",    label: "Home",         icon: LayoutDashboard },
@@ -32,6 +34,9 @@ interface SidebarProps {
 
 export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
+  const { user } = useAuth();
+  const displayName = user?.user_metadata?.full_name ?? user?.email?.split("@")[0] ?? "You";
+  const displayEmail = user?.email ?? "";
   const [collapsed, setCollapsed] = React.useState(false);
 
   return (
@@ -170,8 +175,9 @@ export function Sidebar({ className }: SidebarProps) {
           "flex items-center gap-2.5 px-3 py-2.5 rounded-xl mt-1",
           "text-sidebar-foreground/65 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
           "transition-colors cursor-pointer"
-        )}>
-          <Avatar name="Jane Doe" size="sm" className="shrink-0" />
+        )}
+        onClick={() => signOut()}>
+          <Avatar name={displayName} size="sm" className="shrink-0" />
           <AnimatePresence>
             {!collapsed && (
               <motion.div
@@ -181,8 +187,8 @@ export function Sidebar({ className }: SidebarProps) {
                 transition={{ duration: 0.15 }}
                 className="flex-1 min-w-0"
               >
-                <p className="text-xs font-medium text-sidebar-foreground truncate">Jane Doe</p>
-                <p className="text-[10px] text-muted-foreground truncate">jane@example.com</p>
+                <p className="text-xs font-medium text-sidebar-foreground truncate">{displayName}</p>
+                <p className="text-[10px] text-muted-foreground truncate">{displayEmail}</p>
               </motion.div>
             )}
           </AnimatePresence>
