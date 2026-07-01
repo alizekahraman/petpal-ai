@@ -39,8 +39,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Memoize so consumers only re-render when auth state actually changes
+  const value = React.useMemo<AuthContextValue>(
+    () => ({ user, session, loading }),
+    [user, session, loading]
+  );
+
   return (
-    <AuthContext.Provider value={{ user, session, loading }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

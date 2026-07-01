@@ -3,11 +3,13 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Plus, ChevronRight, Bell, Syringe, UtensilsCrossed, ShieldCheck } from "lucide-react";
+import { Plus, Bell, Syringe, UtensilsCrossed, ShieldCheck } from "lucide-react";
 import { GreetingSection } from "@/components/dashboard/greeting-section";
 import { SummaryCards, type SummaryCard } from "@/components/dashboard/summary-cards";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { PetDashboardCard } from "@/components/dashboard/pet-dashboard-card";
+import { SectionHeader } from "@/components/shared/section-header";
+import { getDaysUntil } from "@/lib/pet-utils";
 import {
   PLACEHOLDER_PETS,
   PLACEHOLDER_HEALTH_EVENTS,
@@ -15,13 +17,7 @@ import {
   PLACEHOLDER_REMINDERS,
 } from "@/lib/placeholder-data";
 
-function getDaysUntil(dateStr?: string): number | null {
-  if (!dateStr) return null;
-  return Math.ceil((new Date(dateStr).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-}
-
 function buildSummaryCards(): SummaryCard[] {
-  // Next vaccination across all pets
   const futureVaccines = PLACEHOLDER_HEALTH_EVENTS.filter(
     (e) => e.type === "vaccination" && e.nextDueDate
   ).sort(
@@ -34,13 +30,11 @@ function buildSummaryCards(): SummaryCard[] {
     ? PLACEHOLDER_PETS.find((p) => p.id === nextVacc.petId)
     : undefined;
 
-  // Today's feeding
   const totalMeals = PLACEHOLDER_FEEDING_SCHEDULES.reduce(
     (sum, s) => sum + s.times.length,
     0
   );
 
-  // Next reminder
   const nextReminder = PLACEHOLDER_REMINDERS.filter((r) => !r.completed).sort(
     (a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
   )[0];
@@ -121,22 +115,18 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6 pb-4">
-      {/* Greeting */}
       <GreetingSection nextVaccine={nextVaccine} />
 
-      {/* Today's Summary */}
       <section>
         <SectionHeader label="Today's Summary" />
         <SummaryCards cards={summaryCards} />
       </section>
 
-      {/* Quick Actions */}
       <section>
         <SectionHeader label="Quick Actions" />
         <QuickActions />
       </section>
 
-      {/* Pet Cards */}
       <section>
         <SectionHeader label="My Pets" href="/pets" linkLabel="See all" />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -148,7 +138,6 @@ export default function DashboardPage() {
               index={i}
             />
           ))}
-          {/* Add pet card */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -167,31 +156,6 @@ export default function DashboardPage() {
           </motion.div>
         </div>
       </section>
-    </div>
-  );
-}
-
-function SectionHeader({
-  label,
-  href,
-  linkLabel,
-}: {
-  label: string;
-  href?: string;
-  linkLabel?: string;
-}) {
-  return (
-    <div className="flex items-center justify-between mb-3">
-      <h3 className="text-sm font-semibold text-foreground">{label}</h3>
-      {href && linkLabel && (
-        <Link
-          href={href}
-          className="flex items-center gap-0.5 text-xs font-medium text-primary hover:opacity-80 transition-opacity"
-        >
-          {linkLabel}
-          <ChevronRight className="w-3.5 h-3.5" />
-        </Link>
-      )}
     </div>
   );
 }

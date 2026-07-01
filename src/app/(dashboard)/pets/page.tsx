@@ -4,44 +4,17 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Plus, PawPrint, ChevronRight } from "lucide-react";
+import { Plus, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SPECIES_EMOJI, SPECIES_GRADIENT, getAge } from "@/lib/pet-utils";
 import { PLACEHOLDER_PETS } from "@/lib/placeholder-data";
-import type { Pet } from "@/types";
-
-const speciesEmoji: Record<Pet["species"], string> = {
-  dog: "🐕", cat: "🐈", bird: "🦜", rabbit: "🐇",
-  fish: "🐟", reptile: "🦎", other: "🐾",
-};
-
-const speciesGradient: Record<Pet["species"], string> = {
-  dog: "from-teal/25 to-sage/25",
-  cat: "from-lavender/25 to-peach/25",
-  bird: "from-sage/25 to-teal/25",
-  rabbit: "from-peach/25 to-lavender/25",
-  fish: "from-teal/25 to-lavender/25",
-  reptile: "from-sage/25 to-peach/25",
-  other: "from-muted to-muted/50",
-};
-
-function getAge(dob?: string) {
-  if (!dob) return null;
-  const months =
-    (new Date().getFullYear() - new Date(dob).getFullYear()) * 12 +
-    new Date().getMonth() - new Date(dob).getMonth();
-  if (months < 12) return `${months}mo`;
-  const y = Math.floor(months / 12);
-  const m = months % 12;
-  return m > 0 ? `${y}y ${m}m` : `${y}y`;
-}
 
 export default function PetsPage() {
   const pets = PLACEHOLDER_PETS;
 
   return (
     <div className="max-w-4xl mx-auto">
-      {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-xl font-bold tracking-tight">My Pets</h1>
@@ -77,54 +50,54 @@ export default function PetsPage() {
         </motion.div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {pets.map((pet, i) => (
-            <motion.div
-              key={pet.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: i * 0.07 }}
-              whileHover={{ y: -2 }}
-            >
-              <Link href={`/pets/${pet.id}`}>
-                <div className="group bg-card rounded-2xl border border-border/50 shadow-card hover:shadow-card-hover hover:border-primary/20 transition-all duration-200 overflow-hidden">
-                  {/* Photo strip */}
-                  <div className={`relative h-36 bg-gradient-to-br ${speciesGradient[pet.species]}`}>
-                    {pet.photoUrl ? (
-                      <Image src={pet.photoUrl} alt={pet.name} fill className="object-cover" sizes="400px" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-5xl">
-                        {speciesEmoji[pet.species]}
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                    <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
-                      <p className="text-white font-bold text-base leading-tight drop-shadow">{pet.name}</p>
-                      <ChevronRight className="w-4 h-4 text-white/70 group-hover:text-white transition-colors" />
-                    </div>
-                  </div>
-
-                  {/* Info */}
-                  <div className="p-4 space-y-2">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge variant="secondary" className="capitalize text-[11px]">{pet.species}</Badge>
-                      {pet.gender !== "unknown" && (
-                        <Badge variant="outline" className="capitalize text-[11px]">{pet.gender}</Badge>
+          {pets.map((pet, i) => {
+            const age = getAge(pet.dateOfBirth);
+            return (
+              <motion.div
+                key={pet.id}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: i * 0.07 }}
+                whileHover={{ y: -2 }}
+              >
+                <Link href={`/pets/${pet.id}`}>
+                  <div className="group bg-card rounded-2xl border border-border/50 shadow-card hover:shadow-card-hover hover:border-primary/20 transition-all duration-200 overflow-hidden">
+                    <div className={`relative h-36 bg-gradient-to-br ${SPECIES_GRADIENT[pet.species]}`}>
+                      {pet.photoUrl ? (
+                        <Image src={pet.photoUrl} alt={pet.name} fill className="object-cover" sizes="400px" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-5xl">
+                          {SPECIES_EMOJI[pet.species]}
+                        </div>
                       )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
+                        <p className="text-white font-bold text-base leading-tight drop-shadow">{pet.name}</p>
+                        <ChevronRight className="w-4 h-4 text-white/70 group-hover:text-white transition-colors" />
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground space-y-0.5">
-                      {pet.breed && <p>{pet.breed}</p>}
-                      <div className="flex items-center gap-3">
-                        {getAge(pet.dateOfBirth) && <span>{getAge(pet.dateOfBirth)} old</span>}
-                        {pet.weight && <span>{pet.weight} {pet.weightUnit}</span>}
+
+                    <div className="p-4 space-y-2">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <Badge variant="secondary" className="capitalize text-[11px]">{pet.species}</Badge>
+                        {pet.gender !== "unknown" && (
+                          <Badge variant="outline" className="capitalize text-[11px]">{pet.gender}</Badge>
+                        )}
+                      </div>
+                      <div className="text-xs text-muted-foreground space-y-0.5">
+                        {pet.breed && <p>{pet.breed}</p>}
+                        <div className="flex items-center gap-3">
+                          {age && <span>{age} old</span>}
+                          {pet.weight && <span>{pet.weight} {pet.weightUnit}</span>}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
+                </Link>
+              </motion.div>
+            );
+          })}
 
-          {/* Add card */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}

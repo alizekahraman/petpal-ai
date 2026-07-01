@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard, PawPrint, HeartPulse, UtensilsCrossed,
-  Calendar, Sparkles, Settings, LogOut, ChevronLeft, ChevronRight,
+  Calendar, Sparkles, Settings, LogOut, ChevronLeft, ChevronRight, BookImage, Bluetooth, Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/ds/avatar";
@@ -19,8 +19,11 @@ const navItems = [
   { href: "/dashboard",    label: "Home",         icon: LayoutDashboard },
   { href: "/pets",         label: "My Pets",      icon: PawPrint },
   { href: "/health",       label: "Health",        icon: HeartPulse },
+  { href: "/growth",       label: "Growth",        icon: BookImage },
   { href: "/feeding",      label: "Feeding",       icon: UtensilsCrossed },
+  { href: "/devices",      label: "Devices",       icon: Bluetooth },
   { href: "/schedule",     label: "Schedule",      icon: Calendar },
+  { href: "/community",    label: "Community",     icon: Globe },
   { href: "/ai-assistant", label: "AI Assistant",  icon: Sparkles, badge: "NEW" },
 ];
 
@@ -71,6 +74,7 @@ export function Sidebar({ className }: SidebarProps) {
 
         <button
           onClick={() => setCollapsed((v) => !v)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className="shrink-0 w-6 h-6 rounded-lg flex items-center justify-center text-sidebar-foreground/40 hover:text-sidebar-foreground hover:bg-sidebar-accent/50 transition-colors"
         >
           {collapsed
@@ -176,7 +180,11 @@ export function Sidebar({ className }: SidebarProps) {
           "text-sidebar-foreground/65 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
           "transition-colors cursor-pointer"
         )}
-        onClick={() => signOut()}>
+        onClick={() => signOut()}
+          role="button"
+          aria-label="Sign out"
+          tabIndex={0}
+          onKeyDown={(e) => e.key === "Enter" && signOut()}>
           <Avatar name={displayName} size="sm" className="shrink-0" />
           <AnimatePresence>
             {!collapsed && (

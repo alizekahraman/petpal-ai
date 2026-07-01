@@ -1,61 +1,13 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Sparkles, Syringe, Weight, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SPECIES_EMOJI, SPECIES_GRADIENT, getAge, getDaysUntil, vaccineUrgency } from "@/lib/pet-utils";
 import type { Pet, HealthEvent } from "@/types";
-
-const speciesGradient: Record<Pet["species"], string> = {
-  dog: "from-teal/30 to-sage/30",
-  cat: "from-lavender/30 to-peach/30",
-  bird: "from-sage/30 to-teal/30",
-  rabbit: "from-peach/30 to-lavender/30",
-  fish: "from-teal/30 to-lavender/30",
-  reptile: "from-sage/30 to-peach/30",
-  other: "from-muted to-muted/50",
-};
-
-const speciesEmoji: Record<Pet["species"], string> = {
-  dog: "🐕",
-  cat: "🐈",
-  bird: "🦜",
-  rabbit: "🐇",
-  fish: "🐟",
-  reptile: "🦎",
-  other: "🐾",
-};
-
-function getAge(dob?: string): string {
-  if (!dob) return "?";
-  const months =
-    (new Date().getFullYear() - new Date(dob).getFullYear()) * 12 +
-    new Date().getMonth() -
-    new Date(dob).getMonth();
-  if (months < 1) return "<1 mo";
-  if (months < 12) return `${months} mo`;
-  const y = Math.floor(months / 12);
-  const m = months % 12;
-  return m > 0 ? `${y}y ${m}m` : `${y}y`;
-}
-
-function getDaysUntil(dateStr?: string): number | null {
-  if (!dateStr) return null;
-  const diff = Math.ceil(
-    (new Date(dateStr).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-  );
-  return diff;
-}
-
-function vaccineUrgency(days: number | null): { label: string; color: string } {
-  if (days === null) return { label: "None scheduled", color: "text-muted-foreground" };
-  if (days < 0) return { label: "Overdue!", color: "text-red-500 font-semibold" };
-  if (days === 0) return { label: "Due today", color: "text-red-500 font-semibold" };
-  if (days <= 7) return { label: `In ${days}d`, color: "text-peach font-semibold" };
-  if (days <= 30) return { label: `In ${days}d`, color: "text-teal" };
-  return { label: `In ${days}d`, color: "text-muted-foreground" };
-}
 
 interface PetDashboardCardProps {
   pet: Pet;
@@ -63,7 +15,7 @@ interface PetDashboardCardProps {
   index?: number;
 }
 
-export function PetDashboardCard({ pet, nextVaccine, index = 0 }: PetDashboardCardProps) {
+export const PetDashboardCard = React.memo(function PetDashboardCard({ pet, nextVaccine, index = 0 }: PetDashboardCardProps) {
   const days = getDaysUntil(nextVaccine?.nextDueDate);
   const urgency = vaccineUrgency(days);
 
@@ -81,7 +33,7 @@ export function PetDashboardCard({ pet, nextVaccine, index = 0 }: PetDashboardCa
           <div
             className={cn(
               "relative h-44 bg-gradient-to-br",
-              speciesGradient[pet.species]
+              SPECIES_GRADIENT[pet.species]
             )}
           >
             {pet.photoUrl ? (
@@ -94,7 +46,7 @@ export function PetDashboardCard({ pet, nextVaccine, index = 0 }: PetDashboardCa
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-6xl">
-                {speciesEmoji[pet.species]}
+                {SPECIES_EMOJI[pet.species]}
               </div>
             )}
 
@@ -142,7 +94,7 @@ export function PetDashboardCard({ pet, nextVaccine, index = 0 }: PetDashboardCa
                   {nextVaccine?.title ?? "None on record"}
                 </p>
               </div>
-              <p className={cn("text-xs shrink-0", urgency.color)}>{urgency.label}</p>
+              <p className={cn("text-xs shrink-0", urgency.colorClass)}>{urgency.label}</p>
             </div>
 
             {/* AI button */}
@@ -159,4 +111,4 @@ export function PetDashboardCard({ pet, nextVaccine, index = 0 }: PetDashboardCa
       </Link>
     </motion.div>
   );
-}
+});

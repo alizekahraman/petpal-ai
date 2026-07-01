@@ -85,7 +85,7 @@ export function Header({ title }: HeaderProps) {
                   placeholder="Search pets, records..."
                   className="flex-1 text-sm bg-transparent outline-none text-foreground placeholder:text-muted-foreground/60 min-w-0"
                 />
-                <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }}>
+                <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} aria-label="Close search">
                   <X className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
                 </button>
               </div>
@@ -97,6 +97,7 @@ export function Header({ title }: HeaderProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSearchOpen(true)}
+              aria-label="Open search"
               className="w-9 h-9 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
             >
               <Search className="w-4 h-4" />
@@ -112,6 +113,8 @@ export function Header({ title }: HeaderProps) {
             whileTap={{ scale: 0.92 }}
             transition={{ duration: 0.1 }}
             onClick={() => setNotifsOpen((v) => !v)}
+            aria-label={`Notifications${unread > 0 ? `, ${unread} unread` : ""}`}
+            aria-expanded={notifsOpen}
             className="relative w-9 h-9 rounded-xl flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <Bell className="w-4 h-4" />
